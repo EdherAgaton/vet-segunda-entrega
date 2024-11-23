@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Agregar Mascota</title>
+    <script type="module" src="lib/js/submitForm.js"></script>
+    <script type="module" src="lib/js/muestraError.js"></script>
+
+    
+    <script type="module" src="./js/ROL_ID_ADMINISTRADOR.js"></script>
+ <script type="module" src="./js/protege.js"></script>
+ <script type="module" src="./js/custom/mi-nav.js"></script>
+</head>
+<body   onload="protege('srv/sesion-actual.php', [ROL_ID_ADMINISTRADOR], 'index.html')
+.then(sesion => {
+  nav.sesion = sesion
+  main.hidden = false
+ })
+.catch(muestraError)">
+
+<mi-nav id="nav"></mi-nav>
+
+<main id="main" hidden>
+    <form onsubmit="submitForm('srv/mascota-agrega.php', event)
+        .then(modelo => location.href = 'index-mascotas.html')
+        .catch(muestraError)">
+
+        <h1>Agregar Mascota</h1>
+        <p><a href="index-mascotas.html">Cancelar</a></p>
+
+        <p>
+            <label>Cliente (ID) *<input name="cliente_id"></label>
+        </p>
+        <p>
+            <label>Nombre *<input name="nombre"></label>
+        </p>
+        <p>
+            <label>Especie *<input name="especie"></label>
+        </p>
+        <p>
+            <label>Raza <input name="raza"></label>
+        </p>
+        <p>
+            <label>Fecha de Nacimiento <input name="fecha_nacimiento" type="date"></label>
+        </p>
+        <p>* Obligatorio</p>
+        <p><button type="submit">Agregar</button></p>
+    </form>
+
+</main>
+</body>
+</html>

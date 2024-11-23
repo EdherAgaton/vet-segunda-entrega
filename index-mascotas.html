@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Acceso a base de datos Mascotas</title>
+
+    <script type="module" src="lib/js/consumeJson.js"></script>
+    <script type="module" src="lib/js/muestraObjeto.js"></script>
+    <script type="module" src="lib/js/muestraError.js"></script>
+
+    
+    <script type="module" src="./js/ROL_ID_ADMINISTRADOR.js"></script>
+    <script type="module" src="./js/protege.js"></script>
+    <script type="module" src="./js/custom/mi-nav.js"></script>
+</head>
+
+<body onload="protege('srv/sesion-actual.php', [ROL_ID_ADMINISTRADOR], 'index.html')
+.then(sesion => { 
+    nav.sesion = sesion; 
+    main.hidden = false;
+    return consumeJson('srv/mascotas.php');
+})
+.then(respuesta => muestraObjeto(document, respuesta.body))
+.catch(muestraError)">
+
+
+<mi-nav id="nav"></mi-nav>
+
+ <main id="main" hidden>
+
+
+
+<!--<body onload="consumeJson('srv/mascotas.php')
+    .then(respuesta => muestraObjeto(document, respuesta.body))
+    .catch(muestraError)">
+    -->
+
+    <h1>Acceso a base de datos Mascotas</h1>
+
+    <p><a href="agrega-mascota.html">Agregar</a></p>
+    <p><a href="index.html">Inicio</a></p>
+
+    <dl id="lista">
+        <li><progress max="100">Cargando&hellip;</progress></li>
+    </dl>
+
+</body>
+
+</html>

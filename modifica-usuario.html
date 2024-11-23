@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Modificar Cliente</title>
+
+    <script type="module" src="lib/js/consumeJson.js"></script>
+    <script type="module" src="lib/js/submitForm.js"></script>
+    <script type="module" src="lib/js/muestraObjeto.js"></script>
+    <script type="module" src="lib/js/muestraError.js"></script>
+
+
+    <script type="module" src="./js/ROL_ID_ADMINISTRADOR.js"></script>
+ <script type="module" src="./js/protege.js"></script>
+ <script type="module" src="./js/custom/mi-nav.js"></script>
+
+    <script>
+        const params = new URL(location.href).searchParams;
+    </script>
+
+</head>
+
+<body onload="protege('srv/sesion-actual.php', [ROL_ID_ADMINISTRADOR], 'index.html')
+.then(sesion => { 
+    nav.sesion = sesion; 
+    main.hidden = false;
+    return consumeJson('srv/usuario.php?' + params);
+})
+    .then(respuesta => muestraObjeto(forma, respuesta.body))
+    .catch(muestraError)">
+
+<!--<body onload="if (params.size > 0) {
+   consumeJson('srv/usuario.php?' + params)
+    .then(respuesta => muestraObjeto(forma, respuesta.body))
+    .catch(muestraError);
+}">-->
+
+
+<mi-nav id="nav"></mi-nav>
+
+<main id="main" hidden>
+
+    <form id="forma" onsubmit="submitForm('srv/usuario-modifica.php', event)
+        .then(respuesta => location.href = 'index-usuario.html')
+        .catch(muestraError)">
+
+        <h1>Modificar Usuario</h1>
+
+        <p><a href="index-usuario.html">Cancelar</a></p>
+
+        <input name="id" type="hidden">
+
+        <p>
+            <label>Nombre *<input name="nombre" value="Cargando&hellip;"></label>
+        </p>
+
+        <p>
+            <label>Email *<input name="email" value="Cargando&hellip;"></label>
+        </p>
+
+        <p>
+            <label>Teléfono *<input name="telefono" value="Cargando&hellip;"></label>
+        </p>
+
+        <p>
+            <label>Dirección *<input name="direccion" value="Cargando&hellip;"></label>
+        </p>
+
+        <p>* Obligatorio</p>
+
+        <p><button type="submit">Guardar</button>
+
+            <button type="button" onclick="
+                if (params.size > 0 && confirm('Confirma la eliminación')) {
+                    consumeJson('srv/usuario-elimina.php?' + params)
+                        .then(() => location.href = 'index-usuario.html')
+                        .catch(muestraError);
+                }">
+                Eliminar
+            </button>
+        </p>
+
+    </form>
+
+
+</main>
+
+
+</body>
+
+</html>

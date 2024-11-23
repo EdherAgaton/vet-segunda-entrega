@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Agregar Veterinario</title>
+    <script type="module" src="lib/js/submitForm.js"></script>
+    <script type="module" src="lib/js/muestraError.js"></script>
+
+
+    <script type="module" src="./js/ROL_ID_ADMINISTRADOR.js"></script>
+    <script type="module" src="./js/protege.js"></script>
+    <script type="module" src="./js/custom/mi-nav.js"></script>
+   
+</head>
+<body   onload="protege('srv/sesion-actual.php', [ROL_ID_ADMINISTRADOR], 'index.html')
+.then(sesion => {
+  nav.sesion = sesion
+  main.hidden = false
+ })
+.catch(muestraError)">
+
+
+<mi-nav id="nav"></mi-nav>
+
+<main id="main" hidden>
+
+    <form onsubmit="submitForm('srv/veterinario-agrega.php', event)
+        .then(modelo => location.href = 'index-veterinarios.html')
+        .catch(muestraError)">
+
+        <h1>Agregar Veterinario</h1>
+        <p><a href="index-veterinarios.html">Cancelar</a></p>
+
+        <p>
+            <label>Nombre *<input name="nombre"></label>
+        </p>
+        <p>
+            <label>Email *<input name="email"></label>
+        </p>
+        <p>
+            <label>Password *<input name="password" type="password"></label>
+        </p>
+        <p>
+            <label>Teléfono <input name="telefono"></label>
+        </p>
+        <p>
+            <label>Cédula <input name="cedula"></label>
+        </p>
+        <p>
+            <label>Especialidad <input name="especialidad"></label>
+        </p>
+        <p>
+            <label>Horario <input name="horario"></label>
+        </p>
+        <p>* Obligatorio</p>
+        <p><button type="submit">Agregar</button></p>
+    </form>
+
+</main>
+</body>
+</html>

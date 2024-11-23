@@ -1,0 +1,9 @@
+<?php
+
+const PRODUCTO = "PRODUCTO";
+const PRO_ID = "PRO_ID";
+
+const PRO_NOMBRE = "PRO_NOMBRE";
+const PRO_PRECIO= "PRO_PRECIO";
+
+const PRO_DESCRIPCION = "PRO_DESCRIPCION";
