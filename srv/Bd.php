@@ -30,6 +30,15 @@ class Bd
                 [PDO::ATTR_PERSISTENT => false, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
             );
 
+            self::$pdo->exec(
+                'CREATE TABLE IF NOT EXISTS ARCHIVO (
+                  ARCH_ID INTEGER,
+                  ARCH_BYTES BLOB NOT NULL,
+                  CONSTRAINT ARCH_PK
+                   PRIMARY KEY(ARCH_ID)
+                 )'
+               );
+            
             // Tabla PRODUCTO
             self::$pdo->exec(
                 "CREATE TABLE IF NOT EXISTS PRODUCTO (
@@ -37,8 +46,11 @@ class Bd
                     PRO_NOMBRE TEXT NOT NULL, 
                     PRO_PRECIO REAL NOT NULL,
                     PRO_DESCRIPCION TEXT NOT NULL,
+                    ARCH_ID INTEGER NOT NULL,
                     CONSTRAINT PRO_NOMBRE_UK UNIQUE(PRO_NOMBRE),
-                    CONSTRAINT PRO_PRECIO_CK CHECK(PRO_PRECIO > 0)
+                    CONSTRAINT PRO_PRECIO_CK CHECK(PRO_PRECIO > 0),
+                    CONSTRAINT PROD_ARCH_FK
+                    FOREIGN KEY (ARCH_ID) REFERENCES ARCHIVO(ARCH_ID)
                 )"
             );
 

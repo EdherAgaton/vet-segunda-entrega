@@ -14,6 +14,8 @@
  <script type="module" src="./js/ROL_ID_ADMINISTRADOR.js"></script>
  <script type="module" src="./js/protege.js"></script>
  <script type="module" src="./js/custom/mi-nav.js"></script>
+ <script type="module" src="lib/js/muestraImagenSeleccionada.js"></script>
+
 
 </head>
 
@@ -24,6 +26,7 @@ onload="protege('srv/sesion-actual.php', [ROL_ID_ADMINISTRADOR], 'index.html')
      nav.sesion = sesion
      main.hidden = false
     })
+    .then(muestraImagenSeleccionada(forma, forma.imagen))
    .catch(muestraError)"
 >
 
@@ -31,7 +34,7 @@ onload="protege('srv/sesion-actual.php', [ROL_ID_ADMINISTRADOR], 'index.html')
 
 <main id="main" hidden>
 
- <form onsubmit="submitForm('srv/producto-agrega.php', event)
+ <form id="forma" onsubmit="submitForm('srv/producto-agrega.php', event)
     .then(modelo => location.href = 'index-productos.html')
     .catch(muestraError)">
 
@@ -60,9 +63,22 @@ onload="protege('srv/sesion-actual.php', [ROL_ID_ADMINISTRADOR], 'index.html')
    </label>
   </p>
 
+  <p>
+   <label>
+    Imagen *
+    <input name="imagen" type="file" accept="image/*" data-img="preview"
+      oninput="muestraImagenSeleccionada(forma, this).catch(muestraError)">
+   </label>
+  </p>
+
   <p>* Obligatorio</p>
 
   <p><button type="submit">Agregar</button></p>
+
+
+  <figure>
+   <img id="preview" hidden alt="Imagen del producto" style="max-width: 100%;">
+  </figure>
 
  </form>
 

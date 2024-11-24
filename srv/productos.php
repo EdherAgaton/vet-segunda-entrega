@@ -5,6 +5,7 @@ require_once __DIR__ . "/../lib/php/select.php";
 require_once __DIR__ . "/../lib/php/devuelveJson.php";
 require_once __DIR__ . "/Bd.php";
 require_once __DIR__ . "/TABLA_PRODUCTO.php";
+require_once __DIR__ . "/TABLA_ARCHIVO.php";
 
 ejecutaServicio(function () {
 
@@ -15,12 +16,21 @@ ejecutaServicio(function () {
   $encodeId = urlencode($modelo[PRO_ID]);
   $id = htmlentities($encodeId);
   $nombre = htmlentities($modelo[PRO_NOMBRE]);
+  $encodeArchId = $modelo[ARCH_ID] === null ? "" : urlencode($modelo[ARCH_ID]);
+  $archId = $encodeArchId === "" ? "" : htmlentities($encodeArchId);
+  $src = $archId === "" ? "" : "srv/archivo.php?id=$archId";
   $render .=
-   "<dd>
-     <p>
+   "<div style='display: flex; flex-direction: row-reverse;
+      align-items: center; gap: 0.5rem'>
+     <dt style='flex: 1 1 0'>
       <a href='modifica-producto.html?id=$id'>$nombre</a>
-     </p>
-    </dd>";
+     </dt>
+     <dd style='flex: 1 1 0; margin: 0'>
+      <a href='modifica-producto.html?id=$id'><img
+        style='width: 50%; aspect-ratio:16/9; object-fit: cover'
+        alt='Imagen del producto' src='$src'></a>
+     </dd>
+    </div>";
  }
 
  devuelveJson(["lista" => ["innerHTML" => $render]]);
