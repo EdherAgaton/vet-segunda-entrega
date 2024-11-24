@@ -13,10 +13,11 @@
  <script type="module" src="./js/ROL_ID_CLIENTE.js"></script>
  <script type="module" src="./js/protege.js"></script>
  <script type="module" src="./js/custom/mi-nav.js"></script>
+ <script type="module" src="./js/ROL_ID_ADMINISTRADOR.js"></script>
 
 </head>
 
-<body onload="protege('srv/sesion-actual.php', [ROL_ID_CLIENTE], 'index.html')
+<body onload="protege('srv/sesion-actual.php', [ROL_ID_CLIENTE] || [ROL_ID_ADMINISTRADOR], 'index.html')
    .then(sesion => {
      nav.sesion = sesion
      main.hidden = false

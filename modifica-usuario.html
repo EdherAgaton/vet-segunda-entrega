@@ -22,14 +22,41 @@
 
 </head>
 
-<body onload="protege('srv/sesion-actual.php', [ROL_ID_ADMINISTRADOR], 'index.html')
+<body onload="
+protege('srv/sesion-actual.php', [ROL_ID_ADMINISTRADOR], 'index.html')
+    .then(async sesion => {
+        nav.sesion = sesion;
+        main.hidden = false;
+
+        if (params.size > 0) {
+            try {
+                const checkBoxes = await consumeJson('srv/rol-checkboxes.php');
+                const modelo = await consumeJson('srv/usuario.php?' + params);
+                await muestraObjeto(document, checkBoxes.body);
+                await muestraObjeto(document, modelo.body);
+            } catch (error) {
+                muestraError(error);
+            }
+        } else {
+            const respuesta = await consumeJson('srv/usuario.php?' + params);
+            muestraObjeto(forma, respuesta.body);
+        }
+    })
+    .catch(muestraError)
+">
+
+
+
+
+<!--<body onload="protege('srv/sesion-actual.php', [ROL_ID_ADMINISTRADOR], 'index.html')
 .then(sesion => { 
     nav.sesion = sesion; 
     main.hidden = false;
     return consumeJson('srv/usuario.php?' + params);
 })
     .then(respuesta => muestraObjeto(forma, respuesta.body))
-    .catch(muestraError)">
+    .catch(muestraError)">-->
+
 
 <!--<body onload="if (params.size > 0) {
    consumeJson('srv/usuario.php?' + params)
@@ -67,6 +94,15 @@
         <p>
             <label>Dirección *<input name="direccion" value="Cargando&hellip;"></label>
         </p>
+
+        <fieldset>
+            <legend>Roles</legend>
+         
+            <div id="roles">
+             <progress max="100">Cargando&hellip;</progress>
+            </div>
+         
+           </fieldset>
 
         <p>* Obligatorio</p>
 

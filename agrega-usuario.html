@@ -4,19 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
     <title>Agregar Cliente</title>
+    <script type="module" src="lib/js/consumeJson.js"></script>
     <script type="module" src="lib/js/submitForm.js"></script>
     <script type="module" src="lib/js/muestraError.js"></script>
+    <script type="module" src="lib/js/muestraObjeto.js"></script>
 
     <script type="module" src="./js/ROL_ID_ADMINISTRADOR.js"></script>
  <script type="module" src="./js/protege.js"></script>
  <script type="module" src="./js/custom/mi-nav.js"></script>
 </head>
-<body   onload="protege('srv/sesion-actual.php', [ROL_ID_ADMINISTRADOR], 'index.html')
+
+<body onload="protege('srv/sesion-actual.php', [ROL_ID_ADMINISTRADOR], 'index.html')
+.then(sesion => { 
+    nav.sesion = sesion; 
+    main.hidden = false;
+    return consumeJson('srv/rol-checkboxes.php');
+})
+.then(chackBoxes => muestraObjeto(document, chackBoxes.body))
+    .catch(muestraError)">
+
+<!--<body onload="consumeJson('srv/rol-checkboxes.php')
+   .then(chackBoxes => muestraObjeto(document, chackBoxes.body))
+   .catch(muestraError)"> -->
+
+<!--<body onload="
+Promise.all([
+  protege('srv/sesion-actual.php', [ROL_ID_ADMINISTRADOR], 'index.html')
+    .then(sesion => {
+      nav.sesion = sesion;
+      main.hidden = false;
+    }),
+  consumeJson('srv/rol-checkboxes.php')
+    .then(checkBoxes => muestraObjeto(document, checkBoxes.body))
+])
+.catch(muestraError)">-->
+
+
+<!--<body   onload="protege('srv/sesion-actual.php', [ROL_ID_ADMINISTRADOR], 'index.html')
 .then(sesion => {
   nav.sesion = sesion
   main.hidden = false
  })
-.catch(muestraError)">
+.catch(muestraError)">-->
 
 <mi-nav id="nav"></mi-nav>
 
@@ -43,6 +72,18 @@
         <p>
             <label>Teléfono <input name="telefono"></label>
         </p>
+
+        <fieldset>
+
+            <legend>Roles</legend>
+         
+            <div id="roles">
+             <progress max="100">Cargando&hellip;</progress>
+            </div>
+         
+           </fieldset>
+
+           
         <p>* Obligatorio</p>
         <p><button type="submit">Agregar</button></p>
     </form>

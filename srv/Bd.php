@@ -45,14 +45,15 @@ class Bd
             // Tabla USUARIO
             self::$pdo->exec(
                 "CREATE TABLE IF NOT EXISTS USUARIO (
-                    USU_ID INTEGER PRIMARY KEY,
+                    USU_ID INTEGER,
                     USU_NOMBRE TEXT NOT NULL,
                     USU_EMAIL TEXT NOT NULL,
                     USU_PASSWORD TEXT NOT NULL,
                     USU_DIRECCION TEXT,
                     USU_TELEFONO TEXT,
                     USU_ESTATUS TEXT NOT NULL,
-                    CONSTRAINT USUARIO_EMAIL_UK UNIQUE(USU_EMAIL)
+                    CONSTRAINT USU_PK PRIMARY KEY(USU_ID),
+                    CONSTRAINT USUARIO_EMAIL_UNQ UNIQUE(USU_EMAIL)
                 )"
             );
 
@@ -150,28 +151,30 @@ class Bd
                if (selectFirst(
                 pdo: self::$pdo,
                 from: ROL,
-                where: [ROL_ID => ROL_ID_ADMINISTRADOR]
+                where: [ROL_ID => "Administrador"]
                ) === false) {
                 insert(
                  pdo: self::$pdo,
                  into: ROL,
                  values: [
-                  ROL_ID => ROL_ID_ADMINISTRADOR,
+                  ROL_ID => "Administrador",
                   ROL_DESCRIPCION => "Administra el sistema."
                  ]
                 );
                }
             
-               if (selectFirst(self::$pdo, ROL, [ROL_ID => ROL_ID_CLIENTE]) === false) {
+               if (selectFirst(self::$pdo, ROL, [ROL_ID => "Cliente"]) === false) {
                 insert(
                  pdo: self::$pdo,
                  into: ROL,
                  values: [
-                  ROL_ID => ROL_ID_CLIENTE,
+                  ROL_ID => "Cliente",
                   ROL_DESCRIPCION => "Realiza compras."
                  ]
                 );
                }
+
+      
 
                if (selectFirst(self::$pdo, USUARIO, [USU_NOMBRE => "susana"]) === false) {
                 insert(
@@ -185,13 +188,6 @@ class Bd
                     USU_ESTATUS => "1",
                     USU_PASSWORD => password_hash("123", PASSWORD_DEFAULT)
                  ]
-                );
-                $usuId = self::$pdo->lastInsertId();
-                insertBridges(
-                 pdo: self::$pdo,
-                 into: USU_ROL,
-                 valuesDePadre: [USU_ID => $usuId],
-                 valueDeHijos: [ROL_ID => [ROL_ID_ADMINISTRADOR]]
                 );
                }
 
@@ -208,13 +204,9 @@ class Bd
                     USU_PASSWORD => password_hash("123", PASSWORD_DEFAULT)
                  ]
                 );
-                $usuId = self::$pdo->lastInsertId();
-                insertBridges(
-                 pdo: self::$pdo,
-                 into: USU_ROL,
-                 valuesDePadre: [USU_ID => $usuId],
-                 valueDeHijos: [ROL_ID => [ROL_ID_CLIENTE]]
-                );
+
+               
+               
                }
                
               
