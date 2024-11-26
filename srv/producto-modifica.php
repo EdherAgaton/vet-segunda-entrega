@@ -22,13 +22,13 @@ ejecutaServicio(function () {
  $nombre = recuperaTexto("nombre");
  $precio = recuperaTexto("precio");
  $descripcion = recuperaTexto("descripcion");
+ $existencias = recuperaTexto("existencias");
  $bytes = recuperaBytes("imagen");
 
 
  $nombre = validaNombre($nombre);
  $precio = validaNombre($precio);
  $descripcion = validaNombre($descripcion);
-
  $bytes = validaImagen($bytes);
 
  
@@ -72,6 +72,7 @@ ejecutaServicio(function () {
   set: [PRO_NOMBRE => $nombre,
       PRO_PRECIO => $precio,
       PRO_DESCRIPCION => $descripcion,
+      PROD_EXISTENCIAS => $existencias,
       ARCH_ID => $archId],
   where: [PRO_ID => $prodId]
  );
@@ -86,6 +87,7 @@ ejecutaServicio(function () {
   "nombre" => ["value" => $nombre],
   "precio" => ["value" => $precio],
   "descripcion" => ["value" => $descripcion],
+  "existencias" => ["value" => $existencias],
   "imagen" => [
             "data-file" => $htmlEncodeArchId === ""
              ? ""

@@ -11,6 +11,8 @@ require_once __DIR__ . "/TABLA_USU_ROL.php";
 require_once __DIR__ . "/ROL_ID_CLIENTE.php";
 require_once __DIR__ . "/ROL_ID_ADMINISTRADOR.php";
 
+require_once __DIR__ . "/ventaEnCapturaAgrega.php";
+
 
 class Bd
 {
@@ -38,6 +40,16 @@ class Bd
                    PRIMARY KEY(ARCH_ID)
                  )'
                );
+               //VENTA
+               self::$pdo->exec(
+                'CREATE TABLE IF NOT EXISTS VENTA (
+                  VENT_ID INTEGER,
+                  VENT_EN_CAPTURA INTEGER NOT NULL,
+                  CONSTRAINT VENT_PK
+                   PRIMARY KEY(VENT_ID)
+                 )'
+               );
+               
             
             // Tabla PRODUCTO
             self::$pdo->exec(
@@ -47,12 +59,27 @@ class Bd
                     PRO_PRECIO REAL NOT NULL,
                     PRO_DESCRIPCION TEXT NOT NULL,
                     ARCH_ID INTEGER NOT NULL,
+                    PROD_EXISTENCIAS REAL NOT NULL,
                     CONSTRAINT PRO_NOMBRE_UK UNIQUE(PRO_NOMBRE),
                     CONSTRAINT PRO_PRECIO_CK CHECK(PRO_PRECIO > 0),
                     CONSTRAINT PROD_ARCH_FK
                     FOREIGN KEY (ARCH_ID) REFERENCES ARCHIVO(ARCH_ID)
                 )"
             );
+            //self::$pdo->exec('DROP TABLE DET_VENTA');
+
+            //DETALLE VENTA
+            self::$pdo->exec(
+                'CREATE TABLE IF NOT EXISTS DET_VENTA (
+                  VENT_ID INTEGER NOT NULL,
+                  PRO_ID INTEGER NOT NULL,
+                  DTV_CANTIDAD REAL NOT NULL,
+                  DTV_PRECIO REAL NOT NULL,
+                  CONSTRAINT DTV_PK PRIMARY KEY (VENT_ID, PRO_ID),
+                  CONSTRAINT DTV_VENT_FK FOREIGN KEY (VENT_ID) REFERENCES VENTA(VENT_ID),
+                  CONSTRAINT DTV_PROD_FK FOREIGN KEY (PRO_ID) REFERENCES PRODUCTO(PRO_ID)
+                  )'
+               );
 
             // Tabla USUARIO
             self::$pdo->exec(
@@ -220,6 +247,14 @@ class Bd
                
                
                }
+
+
+               $cantidadDeVentas =
+              self::$pdo->query("SELECT COUNT(VENT_ID) FROM VENTA")->fetchColumn();
+
+   if ($cantidadDeVentas === 0) {
+    ventaEnCapturaAgrega(self::$pdo);
+   }
                
               
               

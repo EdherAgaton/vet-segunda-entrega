@@ -11,6 +11,7 @@
  <script type="module" src="lib/js/consumeJson.js"></script>
  <script type="module" src="lib/js/muestraError.js"></script>
  <script type="module" src="./js/ROL_ID_CLIENTE.js"></script>
+ <script type="module" src="lib/js/muestraObjeto.js"></script>
  <script type="module" src="./js/protege.js"></script>
  <script type="module" src="./js/custom/mi-nav.js"></script>
  <script type="module" src="./js/ROL_ID_ADMINISTRADOR.js"></script>
@@ -22,23 +23,24 @@
      nav.sesion = sesion
      main.hidden = false
     })
+    .then(consumeJson('srv/productos-compras.php').then(render => muestraObjeto(document, render.body)))
    .catch(muestraError)">
 
  <mi-nav id="nav"></mi-nav>
 
  <main id="main" hidden>
 
-  <h1>Solo Clientes</h1>
+    <h1>Productos</h1>
 
-  <a href="compras.html" >Realizar compras</a>
+  
+  <p><a href="carrito.html">Ver carrito</a></p>
 
-  <p>
-   <button type="button" onclick="consumeJson('srv/saludo-cliente.php')
-     .then(saludo => alert(saludo.body))
-     .catch(muestraError)">
-    Ejecuta servicio
-   </button>
-  </p>
+  <dl id="lista">
+    <dt>Cargando&hellip;</dt>
+    <dd><progress max="100">Cargando&hellip;</progress></dd>
+   </dl>
+  
+  
 
  </main>
 

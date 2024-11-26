@@ -20,6 +20,8 @@ ejecutaServicio(function () {
 
  $descripcion = recuperaTexto("descripcion");
 
+ $existencias = recuperaTexto("existencias");
+
  $bytes = recuperaBytes("imagen");
 
  $nombre = validaNombre($nombre);
@@ -49,7 +51,7 @@ ejecutaServicio(function () {
  insert(
   pdo: $pdo,
   into: PRODUCTO,
-  values:  [PRO_NOMBRE => $nombre, PRO_PRECIO => $precio, PRO_DESCRIPCION => $descripcion, ARCH_ID => $archId]
+  values:  [PRO_NOMBRE => $nombre, PRO_PRECIO => $precio, PRO_DESCRIPCION => $descripcion,PROD_EXISTENCIAS => $existencias,  ARCH_ID => $archId]
  );
  $id = $pdo->lastInsertId();
 

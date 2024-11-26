@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width">
+
+ <title>Agregar</title>
+
+ <script type="module" src="lib/js/consumeJson.js"></script>
+ <script type="module" src="lib/js/submitForm.js"></script>
+ <script type="module" src="lib/js/muestraObjeto.js"></script>
+ <script type="module" src="lib/js/muestraError.js"></script>
+
+
+
+
+ <script type="module" src="./js/ROL_ID_CLIENTE.js"></script>
+ <script type="module" src="./js/protege.js"></script>
+ <script type="module" src="./js/custom/mi-nav.js"></script>
+ <script type="module" src="./js/ROL_ID_ADMINISTRADOR.js"></script>
+
+ <script>
+  // Obtiene los parámetros de la página.
+  const params = new URL(location.href).searchParams
+ </script>
+
+</head>
+
+<!--<body onload="if (params.size > 0) {
+   consumeJson('srv/producto-compras.php?' + params)
+    .then(producto => muestraObjeto(document, producto.body))
+    .catch(muestraError)
+  }">
+-->
+
+<body onload="protege('srv/sesion-actual.php', [ROL_ID_CLIENTE] || [ROL_ID_ADMINISTRADOR], 'index.html')
+   .then(sesion => {
+     nav.sesion = sesion
+     main.hidden = false
+    })
+    .then(consumeJson('srv/producto-compras.php?' + params).then(producto => muestraObjeto(document, producto.body)))
+   .catch(muestraError)">
+
+ <mi-nav id="nav"></mi-nav>
+
+ <main id="main" hidden>
+
+ <form onsubmit="submitForm('srv/det-venta-agrega.php', event)
+    .then(modelo => location.href = 'compras.html')
+    .catch(muestraError)">
+
+  <h1>Agregar</h1>
+
+  <p><a href="compras.html">Cancelar</a></p>
+
+  <input type="hidden" name="id">
+
+
+  <p>
+    <label>
+     <output name="nombre">
+      <progress max="100">Cargando&hellip;</progress>
+     </output>
+    </label>
+   </p>
+
+
+  <p>
+   <label>
+    Precio
+    <output name="precio">
+     <progress max="100">Cargando&hellip;</progress>
+    </output>
+   </label>
+  </p>
+
+  <p>
+   <label>
+    Cantidad *
+    <input name="cantidad" type="number" min="0" step="0.01">
+   </label>
+  </p>
+
+  <p>* Obligatorio</p>
+
+  <p><button type="submit">Agregar</button></p>
+
+ </form>
+
+</body>
+
+</html>

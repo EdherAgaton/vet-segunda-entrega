@@ -65,6 +65,13 @@ onload="protege('srv/sesion-actual.php', [ROL_ID_ADMINISTRADOR], 'index.html')
 
   <p>
    <label>
+    Existencias *
+    <input name="existencias">
+   </label>
+  </p>
+
+  <p>
+   <label>
     Imagen *
     <input name="imagen" type="file" accept="image/*" data-img="preview"
       oninput="muestraImagenSeleccionada(forma, this).catch(muestraError)">

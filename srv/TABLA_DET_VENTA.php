@@ -1,0 +1,5 @@
+<?php
+
+const DET_VENTA = "DET_VENTA";
+const DTV_CANTIDAD = "DTV_CANTIDAD";
+const DTV_PRECIO = "DTV_PRECIO";

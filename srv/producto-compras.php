@@ -7,12 +7,17 @@ require_once __DIR__ . "/../lib/php/selectFirst.php";
 require_once __DIR__ . "/../lib/php/ProblemDetails.php";
 require_once __DIR__ . "/../lib/php/devuelveJson.php";
 require_once __DIR__ . "/Bd.php";
+require_once __DIR__ . "/productoBusca.php";
+require_once __DIR__ . "/validaProducto.php";
 require_once __DIR__ . "/TABLA_PRODUCTO.php";
 require_once __DIR__ . "/TABLA_ARCHIVO.php";
 
 ejecutaServicio(function () {
 
  $id = recuperaIdEntero("id");
+
+ $producto = productoBusca(Bd::pdo(), $id);
+ validaProducto($producto, $id);
 
  $modelo =
   selectFirst(pdo: Bd::pdo(),  from: PRODUCTO,  where: [PRO_ID => $id]);
@@ -27,14 +32,13 @@ ejecutaServicio(function () {
   );
  }
 
- $encodeArchId = $modelo[ARCH_ID] === null ? "" : urlencode($modelo[ARCH_ID]);
+ $encodeArchId = $producto[ARCH_ID] === null ? "" : urlencode($producto[ARCH_ID]);
  $htmlEncodeArchId = htmlentities($encodeArchId);
  devuelveJson([
   "id" => ["value" => $id],
-  "nombre" => ["value" => $modelo[PRO_NOMBRE]],
-  "precio" => ["value" => $modelo[PRO_PRECIO]],
-  "descripcion" => ["value" => $modelo[PRO_DESCRIPCION]],
-  "existencias" => ["value" => $modelo[PROD_EXISTENCIAS]],
+  "nombre" => ["value" => $producto[PRO_NOMBRE]],
+  "precio" => ["value" => "$" . number_format($producto[PRO_PRECIO], 2)],
+  "descripcion" => ["value" => $producto[PRO_DESCRIPCION]],
   "imagen" => [
    "data-file" => $htmlEncodeArchId === ""
     ? ""

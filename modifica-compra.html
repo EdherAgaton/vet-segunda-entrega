@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width">
+
+ <title>Modificar</title>
+
+ <script type="module" src="lib/js/consumeJson.js"></script>
+ <script type="module" src="lib/js/submitForm.js"></script>
+ <script type="module" src="lib/js/muestraError.js"></script>
+ <script type="module" src="lib/js/muestraObjeto.js"></script>
+
+ <script>
+  // Obtiene los parámetros de la página.
+  const params = new URL(location.href).searchParams
+ </script>
+
+</head>
+
+<body onload="if (params.size > 0) {
+   consumeJson('srv/det-venta.php?' + params)
+    .then(modelo => muestraObjeto(document, modelo.body))
+    .catch(muestraError)
+  }">
+
+ <form onsubmit="submitForm('srv/det-venta-modifica.php', event)
+    .then(modelo => location.href = 'carrito.html')
+    .catch(muestraError)">
+
+  <h1>Modificar</h1>
+
+  <p><a href="carrito.html">Cancelar</a></p>
+
+  <input type="hidden" name="prodId">
+
+  <p>
+   <label>
+    Producto
+    <output name="prodNombre">
+     <progress max="100">Cargando&hellip;</progress>
+    </output>
+   </label>
+  </p>
+
+  <p>
+   <label>
+    Precio
+    <output name="precio">
+     <progress max="100">Cargando&hellip;</progress>
+    </output>
+   </label>
+  </p>
+
+  <p>
+   <label>
+    Cantidad *
+    <input name="cantidad" type="number" min="0" step="0.01">
+   </label>
+  </p>
+
+  <p>* Obligatorio</p>
+
+  <p>
+
+   <button type="submit">Guardar</button>
+
+   <button type="button" onclick="
+     if (params.size > 0 && confirm('Confirma la eliminación')) {
+      consumeJson('srv/det-venta-elimina.php?' + params)
+       .then(() => location.href = 'carrito.html')
+       .catch(muestraError)
+     }">
+    Eliminar
+   </button>
+
+  </p>
+
+ </form>
+
+</body>
+
+</html>

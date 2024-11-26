@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width">
+
+ <title>Carrito</title>
+
+ <script type="module" src="lib/js/consumeJson.js"></script>
+ <script type="module" src="lib/js/muestraError.js"></script>
+ <script type="module" src="lib/js/muestraObjeto.js"></script>
+ <script type="module" src="./js/ROL_ID_CLIENTE.js"></script>
+ <script type="module" src="./js/protege.js"></script>
+ <script type="module" src="./js/custom/mi-nav.js"></script>
+ <script type="module" src="./js/ROL_ID_ADMINISTRADOR.js"></script>
+
+</head>
+
+<body onload="protege('srv/sesion-actual.php', [ROL_ID_CLIENTE] || [ROL_ID_ADMINISTRADOR], 'index.html')
+   .then(sesion => {
+     nav.sesion = sesion
+     main.hidden = false
+    })
+    .then(consumeJson('srv/venta-en-captura.php').then(venta => muestraObjeto(document, venta.body)))
+   .catch(muestraError)">
+
+   
+
+<!--<body onload="consumeJson('srv/venta-en-captura.php')
+  .then(venta => muestraObjeto(document, venta.body))
+  .catch(muestraError)">-->
+
+  
+ <mi-nav id="nav"></mi-nav>
+
+ <main id="main" hidden>
+
+ <h1>Carrito</h1>
+
+ <p>
+
+  <a href="compras.html">Productos</a>
+
+  <button type='button' onclick="if (confirm('Confirma procesar')) {
+     consumeJson('srv/venta-en-captura-procesa.php')
+      .then(() => location.href = 'index.html')
+      .catch(muestraError)
+    }">
+   Procesar compra
+  </button>
+
+ </p>
+
+ <p>
+  <label>
+   Folio
+   <output id="folio">
+    <progress max="100">Cargando&hellip;</progress>
+   </output>
+  </label>
+ </p>
+
+ <fieldset>
+
+  <legend>Detalle</legend>
+
+  <dl id="detalles">
+   <dt>Cargando&hellip;</dt>
+   <dd><progress max="100">Cargando&hellip;</progress></dd>
+  </dl>
+
+ </fieldset>
+
+</main>
+
+</body>
+
+</html>
